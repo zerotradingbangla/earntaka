@@ -157,25 +157,21 @@ a {
 
 <script>
 // LOGIN
-function login() {
-  var number = document.getElementById("number").value;
-  var pass = document.getElementById("password").value;
+function login(){
 
-  var savedNumber = localStorage.getItem("number");
-  var savedPass = localStorage.getItem("password");
+  var number = document.querySelector('input[type="text"]').value;
+  var pass = document.querySelector('input[type="password"]').value;
 
-  if(savedNumber == null) {
-    alert("Create account first!");
-    return;
-  }
+  var savedNumber = localStorage.getItem("user_number");
+  var savedPass = localStorage.getItem("user_pass");
 
-  if(number == savedNumber && pass == savedPass) {
+  if(number === savedNumber && pass === savedPass){
     window.location.href = "dashboard.html";
   } else {
-    alert("Wrong login!");
+    alert("Wrong Number or Password");
   }
-}
 
+}
 // LIVE DATA
 setInterval(function(){
 
