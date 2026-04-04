@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Trading Dashboard</title>
+<title>Pro Trading</title>
 
 <style>
 body {
@@ -9,71 +9,82 @@ body {
   font-family: Arial;
   background: #0b0e11;
   color: white;
+  display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 200px;
+  background: #161a1e;
+  padding: 15px;
+}
+
+.sidebar h3 {
+  color: #f0b90b;
+}
+
+.sidebar p {
+  margin: 10px 0;
+}
+
+/* MAIN */
+.main {
+  flex: 1;
+  padding: 10px;
 }
 
 /* HEADER */
 .header {
-  padding: 15px;
-  background: #161a1e;
   text-align: center;
-  font-size: 20px;
   color: #f0b90b;
 }
 
-/* CARD SECTION */
+/* CARDS */
 .cards {
   display: flex;
-  justify-content: center;
-  margin-top: 20px;
 }
 
 .card {
   background: #161a1e;
-  padding: 15px;
   margin: 10px;
-  width: 180px;
-  border-radius: 10px;
+  padding: 15px;
+  width: 150px;
   text-align: center;
+  border-radius: 10px;
 }
 
-/* PRICE COLOR */
-.up {
-  color: #00ff88;
-}
-
-.down {
-  color: red;
-}
-
-/* BUTTON */
-button {
-  margin-top: 10px;
-  padding: 8px;
-  width: 100%;
-  background: #f0b90b;
-  border: none;
-  color: black;
-  border-radius: 5px;
-}
+.up { color: #00ff88; }
+.down { color: red; }
 
 /* GRAPH */
 #graph {
   width: 100%;
-  height: 300px;
-  margin-top: 20px;
+  height: 250px;
 }
 
-/* FAKE DATA PANEL */
-.panel {
+/* ORDER BOOK */
+.orderbook {
   display: flex;
-  justify-content: space-around;
-  padding: 10px;
-  background: #161a1e;
+  justify-content: space-between;
   margin-top: 10px;
 }
 
-.box {
-  text-align: center;
+.buy, .sell {
+  width: 48%;
+  background: #161a1e;
+  padding: 10px;
+}
+
+.buy p { color: #00ff88; }
+.sell p { color: red; }
+
+/* BUTTON */
+button {
+  margin-top: 5px;
+  padding: 8px;
+  width: 100%;
+  background: #f0b90b;
+  border: none;
 }
 </style>
 
@@ -81,80 +92,100 @@ button {
 
 <body>
 
-<div class="header">📊 LIVE TRADING SYSTEM</div>
-
-<div class="panel">
-<div class="box">Users<br><b id="users">1200</b></div>
-<div class="box">Trades<br><b id="trades">350</b></div>
-<div class="box">Volume<br><b id="volume">$12000</b></div>
+<!-- SIDEBAR -->
+<div class="sidebar">
+<h3>📊 Binance UI</h3>
+<p>Dashboard</p>
+<p>Markets</p>
+<p>Wallet</p>
+<p>History</p>
 </div>
+
+<!-- MAIN -->
+<div class="main">
+
+<div class="header">🔥 LIVE MARKET 🔥</div>
 
 <div class="cards">
 
 <div class="card">
-<h3>ELITE</h3>
+ELITE
 <p id="p1">$3.00</p>
-<p id="s1" class="up">▲ UP</p>
-<button>Buy</button>
+<p id="s1" class="up">UP</p>
+<button onclick="pay()">Buy</button>
 </div>
 
 <div class="card">
-<h3>PREMIUM</h3>
+PREMIUM
 <p id="p2">$2.00</p>
-<p id="s2" class="up">▲ UP</p>
-<button>Buy</button>
+<p id="s2" class="up">UP</p>
+<button onclick="pay()">Buy</button>
 </div>
 
 <div class="card">
-<h3>BASIC</h3>
+BASIC
 <p id="p3">$1.00</p>
-<p id="s3" class="up">▲ UP</p>
-<button>Buy</button>
+<p id="s3" class="up">UP</p>
+<button onclick="pay()">Buy</button>
 </div>
 
 </div>
 
 <canvas id="graph"></canvas>
 
+<div class="orderbook">
+
+<div class="buy" id="buy"></div>
+<div class="sell" id="sell"></div>
+
+</div>
+
+</div>
+
 <script>
 var prices = [3,2,1];
-
 var min = [2.90,1.95,1.00];
 var max = [3.22,2.12,1.32];
 
 function updatePrices() {
-  for(let i=0;i<prices.length;i++) {
+  for(let i=0;i<3;i++) {
 
     let change = (Math.random()*0.15 - 0.10);
     prices[i] += change;
 
-    // LIMIT CONTROL
     if(prices[i] < min[i]) prices[i] = min[i];
     if(prices[i] > max[i]) prices[i] = max[i];
 
-    let el = document.getElementById("p"+(i+1));
-    let status = document.getElementById("s"+(i+1));
+    document.getElementById("p"+(i+1)).innerText =
+      "$" + prices[i].toFixed(2);
 
-    el.innerText = "$" + prices[i].toFixed(2);
+    let s = document.getElementById("s"+(i+1));
 
     if(change > 0){
-      status.innerText = "▲ UP";
-      status.className = "up";
+      s.innerText = "▲ UP";
+      s.className = "up";
     } else {
-      status.innerText = "▼ DOWN";
-      status.className = "down";
+      s.innerText = "▼ DOWN";
+      s.className = "down";
     }
   }
 
-  // fake stats
-  document.getElementById("users").innerText =
-    1000 + Math.floor(Math.random()*500);
+  updateOrderBook();
+}
 
-  document.getElementById("trades").innerText =
-    300 + Math.floor(Math.random()*200);
+/* ORDER BOOK */
+function updateOrderBook() {
 
-  document.getElementById("volume").innerText =
-    "$" + (10000 + Math.floor(Math.random()*5000));
+  let buyHTML = "<h4>BUY</h4>";
+  let sellHTML = "<h4>SELL</h4>";
+
+  for(let i=0;i<5;i++) {
+    buyHTML += "<p>$"+(Math.random()*3).toFixed(2)+"</p>";
+    sellHTML += "<p>$"+(Math.random()*3).toFixed(2)+"</p>";
+  }
+
+  document.getElementById("buy").innerHTML = buyHTML;
+  document.getElementById("sell").innerHTML = sellHTML;
 }
 
 /* GRAPH */
@@ -162,7 +193,7 @@ var canvas = document.getElementById("graph");
 var ctx = canvas.getContext("2d");
 
 canvas.width = window.innerWidth;
-canvas.height = 300;
+canvas.height = 250;
 
 var data = [];
 for(let i=0;i<100;i++) data.push(150);
@@ -181,6 +212,11 @@ function drawGraph() {
 
   data.shift();
   data.push(data[data.length-1] + (Math.random()*10-5));
+}
+
+/* BKASH */
+function pay(){
+  window.location.href = "https://www.bkash.com/";
 }
 
 setInterval(function(){
