@@ -7,9 +7,36 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: radial-gradient(circle, #0f2027, #203a43, #2c5364);
+  background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1c1c1c);
+  background-size: 400% 400%;
+  animation: bgMove 10s infinite alternate;
   color: white;
   text-align: center;
+}
+
+/* BACKGROUND ANIMATION */
+@keyframes bgMove {
+  0% { background-position: left; }
+  100% { background-position: right; }
+}
+
+/* GLOW LIGHT */
+.glow {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  background: #00ffc3;
+  border-radius: 50%;
+  filter: blur(100px);
+  top: 20%;
+  left: 30%;
+  animation: moveGlow 8s infinite alternate;
+  z-index: -1;
+}
+
+@keyframes moveGlow {
+  0% { top: 10%; left: 20%; }
+  100% { top: 40%; left: 60%; }
 }
 
 /* TITLE */
@@ -17,7 +44,7 @@ body {
   font-size: 32px;
   margin-top: 20px;
   color: #00ffc3;
-  text-shadow: 0 0 10px #00ffc3;
+  text-shadow: 0 0 15px #00ffc3;
 }
 
 /* CARD */
@@ -30,11 +57,13 @@ body {
   border-radius: 15px;
   backdrop-filter: blur(10px);
   transition: 0.3s;
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 0 20px rgba(0,255,200,0.2);
 }
 
 .card:hover {
   transform: scale(1.08);
-  box-shadow: 0 0 20px #00ffc3;
+  box-shadow: 0 0 25px #00ffc3;
 }
 
 /* BUTTON */
@@ -45,10 +74,12 @@ button {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 button:hover {
-  box-shadow: 0 0 10px #00c6ff;
+  transform: scale(1.1);
+  box-shadow: 0 0 15px #00c6ff;
 }
 
 /* GRAPH */
@@ -71,6 +102,8 @@ button:hover {
 </head>
 
 <body>
+
+<div class="glow"></div>
 
 <h1 class="title">🔥 LIVE TRADING PANEL 🔥</h1>
 
