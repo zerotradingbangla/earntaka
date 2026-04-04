@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>Login Page</title>
+
 <style>
 body {
   background: linear-gradient(135deg, #667eea, #764ba2);
@@ -41,6 +42,7 @@ a {
   color: #667eea;
 }
 </style>
+
 </head>
 
 <body>
@@ -48,25 +50,35 @@ a {
 <div class="box">
 <h2>Login</h2>
 
-<input type="text" placeholder="Email">
-<input type="password" placeholder="Password">
+<input type="text" id="number" placeholder="Mobile Number">
+<input type="password" id="password" placeholder="Password">
 
 <button onclick="login()">Login</button>
 
 <a href="create.html">Create Account</a>
 <a href="otp.html">Forgot Password?</a>
 </div>
+
 <script>
 function login() {
-  var email = document.querySelector('input[type="text"]').value;
-  var pass = document.querySelector('input[type="password"]').value;
+  var number = document.getElementById("number").value;
+  var pass = document.getElementById("password").value;
 
-  if(email == "" || pass == "") {
-    alert("Please fill all fields!");
-  } else {
+  var savedNumber = localStorage.getItem("number");
+  var savedPass = localStorage.getItem("password");
+
+  if(savedNumber == null) {
+    alert("Please create account first!");
+    return;
+  }
+
+  if(number == savedNumber && pass == savedPass) {
     window.location.href = "dashboard.html";
+  } else {
+    alert("Wrong number or password");
   }
 }
 </script>
+
 </body>
 </html>
