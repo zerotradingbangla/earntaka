@@ -7,39 +7,64 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  background: radial-gradient(circle, #0f2027, #203a43, #2c5364);
   color: white;
   text-align: center;
 }
 
+/* TITLE */
 .title {
-  font-size: 30px;
+  font-size: 32px;
   margin-top: 20px;
+  color: #00ffc3;
+  text-shadow: 0 0 10px #00ffc3;
 }
 
+/* CARD */
 .card {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.08);
   padding: 20px;
-  margin: 10px;
+  margin: 15px;
   display: inline-block;
   width: 180px;
   border-radius: 15px;
   backdrop-filter: blur(10px);
+  transition: 0.3s;
 }
 
+.card:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px #00ffc3;
+}
+
+/* BUTTON */
 button {
   padding: 10px;
-  background: #00c6ff;
+  background: linear-gradient(45deg, #00c6ff, #0072ff);
   color: white;
   border: none;
   border-radius: 8px;
+  cursor: pointer;
 }
 
+button:hover {
+  box-shadow: 0 0 10px #00c6ff;
+}
+
+/* GRAPH */
 #graph {
   width: 100%;
   height: 300px;
   margin-top: 30px;
-  background: rgba(0,0,0,0.3);
+}
+
+/* STATUS */
+.up {
+  color: #00ff00;
+}
+
+.down {
+  color: red;
 }
 </style>
 
@@ -47,23 +72,26 @@ button {
 
 <body>
 
-<h1 class="title">🔥 Premium Card Shop 🔥</h1>
+<h1 class="title">🔥 LIVE TRADING PANEL 🔥</h1>
 
 <div class="card">
-<h3>Elite Premium Card</h3>
+<h3>Elite Premium</h3>
 <p id="p1">Price: $3.00</p>
+<p id="s1" class="up">UP</p>
 <a href="bkash.html"><button>Buy Now</button></a>
 </div>
 
 <div class="card">
-<h3>Premium Card</h3>
+<h3>Premium</h3>
 <p id="p2">Price: $2.00</p>
+<p id="s2" class="up">UP</p>
 <a href="bkash.html"><button>Buy Now</button></a>
 </div>
 
 <div class="card">
-<h3>Basic Card</h3>
+<h3>Basic</h3>
 <p id="p3">Price: $1.00</p>
+<p id="s3" class="up">UP</p>
 <a href="bkash.html"><button>Buy Now</button></a>
 </div>
 
@@ -76,19 +104,24 @@ var ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = 300;
 
-var prices = [3, 2, 1];
+var prices = [3,2,1];
 var data = [];
 
-for(let i=0;i<100;i++) data.push(100);
+for(let i=0;i<100;i++) data.push(150);
 
 function updatePrices() {
   for(let i=0;i<prices.length;i++) {
-    var change = (Math.random() * 0.15);
 
-    if(Math.random() > 0.5) {
-      prices[i] += change;
+    var up = Math.random() > 0.5;
+
+    if(up) {
+      prices[i] += Math.random()*0.15;
+      document.getElementById("s"+(i+1)).innerText = "UP";
+      document.getElementById("s"+(i+1)).className = "up";
     } else {
       prices[i] -= 0.10;
+      document.getElementById("s"+(i+1)).innerText = "DOWN";
+      document.getElementById("s"+(i+1)).className = "down";
     }
 
     if(prices[i] < 0.5) prices[i] = 0.5;
@@ -102,7 +135,7 @@ function drawGraph() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
   ctx.beginPath();
-  ctx.strokeStyle = "#00ffcc";
+  ctx.strokeStyle = "#00ffc3";
   ctx.lineWidth = 2;
 
   for(let i=0;i<data.length;i++) {
@@ -113,14 +146,14 @@ function drawGraph() {
 
   data.shift();
   var last = data[data.length-1];
-  var change = (Math.random()*10) - 5;
+  var change = (Math.random()*10)-5;
   data.push(last + change);
 }
 
 setInterval(function(){
   updatePrices();
   drawGraph();
-}, 1000);
+},1000);
 </script>
 
 </body>
