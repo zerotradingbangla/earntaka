@@ -1,45 +1,93 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Login Page</title>
+<title>Login</title>
 
 <style>
 body {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  margin: 0;
   font-family: Arial;
+  height: 100vh;
+  display: flex;
+  background: linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#1c1c1c);
+  background-size: 400% 400%;
+  animation: bgMove 10s infinite alternate;
+}
+
+/* BG ANIMATION */
+@keyframes bgMove {
+  0% { background-position: left; }
+  100% { background-position: right; }
+}
+
+/* LEFT SIDE (INFO) */
+.left {
+  width: 60%;
+  padding: 50px;
+  color: white;
+}
+
+.left h1 {
+  font-size: 40px;
+  color: #00ffc3;
+  text-shadow: 0 0 10px #00ffc3;
+}
+
+.left p {
+  margin-top: 20px;
+  color: #ccc;
+}
+
+/* LIVE STATS */
+.stats {
+  margin-top: 40px;
+}
+
+.stat {
+  margin: 15px 0;
+  font-size: 18px;
+}
+
+/* RIGHT LOGIN BOX */
+.right {
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .box {
-  width: 320px;
-  margin: 100px auto;
-  background: white;
-  padding: 25px;
-  text-align: center;
+  background: rgba(255,255,255,0.1);
+  padding: 30px;
+  width: 300px;
   border-radius: 15px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  backdrop-filter: blur(15px);
+  text-align: center;
+  box-shadow: 0 0 25px rgba(0,255,200,0.3);
 }
 
 input {
   width: 90%;
   padding: 12px;
-  margin: 8px;
+  margin: 10px;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: none;
 }
 
 button {
   width: 95%;
   padding: 12px;
-  background: #667eea;
-  color: white;
+  background: linear-gradient(45deg,#00c6ff,#0072ff);
   border: none;
+  color: white;
   border-radius: 8px;
+  cursor: pointer;
 }
 
 a {
   display: block;
   margin-top: 10px;
-  color: #667eea;
+  color: #00ffc3;
 }
 </style>
 
@@ -47,8 +95,23 @@ a {
 
 <body>
 
+<!-- LEFT SIDE -->
+<div class="left">
+<h1>🚀 Smart Trading Platform</h1>
+<p>Trade smarter. Earn faster. Grow your income with our premium system.</p>
+
+<div class="stats">
+<div class="stat" id="users">👥 Users: 1200</div>
+<div class="stat" id="profit">💰 Profit: $5000</div>
+<div class="stat" id="trades">📊 Trades: 320</div>
+</div>
+</div>
+
+<!-- RIGHT SIDE -->
+<div class="right">
 <div class="box">
-<h2>Login</h2>
+
+<h2 style="color:#00ffc3;">🔐 Login</h2>
 
 <input type="text" id="number" placeholder="Mobile Number">
 <input type="password" id="password" placeholder="Password">
@@ -57,9 +120,12 @@ a {
 
 <a href="create.html">Create Account</a>
 <a href="otp.html">Forgot Password?</a>
+
+</div>
 </div>
 
 <script>
+// LOGIN
 function login() {
   var number = document.getElementById("number").value;
   var pass = document.getElementById("password").value;
@@ -68,16 +134,28 @@ function login() {
   var savedPass = localStorage.getItem("password");
 
   if(savedNumber == null) {
-    alert("Please create account first!");
+    alert("Create account first!");
     return;
   }
 
   if(number == savedNumber && pass == savedPass) {
     window.location.href = "dashboard.html";
   } else {
-    alert("Wrong number or password");
+    alert("Wrong login!");
   }
 }
+
+// LIVE FAKE STATS
+setInterval(function(){
+  document.getElementById("users").innerText =
+    "👥 Users: " + Math.floor(Math.random()*5000);
+
+  document.getElementById("profit").innerText =
+    "💰 Profit: $" + Math.floor(Math.random()*10000);
+
+  document.getElementById("trades").innerText =
+    "📊 Trades: " + Math.floor(Math.random()*1000);
+},2000);
 </script>
 
 </body>
