@@ -50,6 +50,17 @@ a {
 <a href="create.html">Create Account</a>
 <a href="#">Forgot Password?</a>
 </div>
+<script>
+function login() {
+  var email = document.querySelector('input[type="text"]').value;
+  var pass = document.querySelector('input[type="password"]').value;
 
+  if(email == "" || pass == "") {
+    alert("Please fill all fields!");
+  } else {
+    window.location.href = "dashboard.html";
+  }
+}
+</script>
 </body>
 </html>
