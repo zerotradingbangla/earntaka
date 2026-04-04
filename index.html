@@ -12,43 +12,56 @@ body {
   background: linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#1c1c1c);
   background-size: 400% 400%;
   animation: bgMove 10s infinite alternate;
+  color: white;
 }
 
-/* BG ANIMATION */
 @keyframes bgMove {
   0% { background-position: left; }
   100% { background-position: right; }
 }
 
-/* LEFT SIDE (INFO) */
+/* LEFT SIDE */
 .left {
   width: 60%;
   padding: 50px;
-  color: white;
 }
 
+/* TITLE */
 .left h1 {
-  font-size: 40px;
+  font-size: 42px;
   color: #00ffc3;
-  text-shadow: 0 0 10px #00ffc3;
+  text-shadow: 0 0 15px #00ffc3;
 }
 
+/* TEXT */
 .left p {
-  margin-top: 20px;
   color: #ccc;
+  margin-top: 10px;
 }
 
 /* LIVE STATS */
 .stats {
-  margin-top: 40px;
+  margin-top: 30px;
 }
 
 .stat {
-  margin: 15px 0;
+  margin: 10px 0;
   font-size: 18px;
 }
 
-/* RIGHT LOGIN BOX */
+/* MARKET BOX */
+.market {
+  margin-top: 30px;
+  background: rgba(255,255,255,0.08);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.market p {
+  margin: 8px;
+}
+
+/* RIGHT SIDE */
 .right {
   width: 40%;
   display: flex;
@@ -56,16 +69,18 @@ body {
   align-items: center;
 }
 
+/* LOGIN BOX */
 .box {
   background: rgba(255,255,255,0.1);
   padding: 30px;
-  width: 300px;
+  width: 320px;
   border-radius: 15px;
   backdrop-filter: blur(15px);
   text-align: center;
-  box-shadow: 0 0 25px rgba(0,255,200,0.3);
+  box-shadow: 0 0 30px rgba(0,255,200,0.4);
 }
 
+/* INPUT */
 input {
   width: 90%;
   padding: 12px;
@@ -74,6 +89,7 @@ input {
   border: none;
 }
 
+/* BUTTON */
 button {
   width: 95%;
   padding: 12px;
@@ -82,8 +98,14 @@ button {
   color: white;
   border-radius: 8px;
   cursor: pointer;
+  transition: 0.3s;
 }
 
+button:hover {
+  transform: scale(1.05);
+}
+
+/* LINKS */
 a {
   display: block;
   margin-top: 10px;
@@ -97,21 +119,30 @@ a {
 
 <!-- LEFT SIDE -->
 <div class="left">
+
 <h1>🚀 Smart Trading Platform</h1>
-<p>Trade smarter. Earn faster. Grow your income with our premium system.</p>
+<p>Trade smarter. Earn faster. Professional crypto system.</p>
 
 <div class="stats">
 <div class="stat" id="users">👥 Users: 1200</div>
 <div class="stat" id="profit">💰 Profit: $5000</div>
 <div class="stat" id="trades">📊 Trades: 320</div>
 </div>
+
+<div class="market">
+<h3>📊 Live Market</h3>
+<p id="btc">BTC: $30000</p>
+<p id="eth">ETH: $2000</p>
+<p id="bnb">BNB: $300</p>
+</div>
+
 </div>
 
 <!-- RIGHT SIDE -->
 <div class="right">
 <div class="box">
 
-<h2 style="color:#00ffc3;">🔐 Login</h2>
+<h2 style="color:#00ffc3;">🔐 Secure Login</h2>
 
 <input type="text" id="number" placeholder="Mobile Number">
 <input type="password" id="password" placeholder="Password">
@@ -145,8 +176,9 @@ function login() {
   }
 }
 
-// LIVE FAKE STATS
+// LIVE DATA
 setInterval(function(){
+
   document.getElementById("users").innerText =
     "👥 Users: " + Math.floor(Math.random()*5000);
 
@@ -155,6 +187,16 @@ setInterval(function(){
 
   document.getElementById("trades").innerText =
     "📊 Trades: " + Math.floor(Math.random()*1000);
+
+  document.getElementById("btc").innerText =
+    "BTC: $" + (30000 + Math.floor(Math.random()*1000));
+
+  document.getElementById("eth").innerText =
+    "ETH: $" + (2000 + Math.floor(Math.random()*200));
+
+  document.getElementById("bnb").innerText =
+    "BNB: $" + (300 + Math.floor(Math.random()*50));
+
 },2000);
 </script>
 
