@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>OTP</title>
+
+<style>
+body {
+  font-family: Arial;
+  text-align: center;
+  background: #667eea;
+}
+
+.box {
+  background: white;
+  padding: 20px;
+  margin: 100px auto;
+  width: 300px;
+  border-radius: 10px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>Forgot Password</h2>
+
+<input type="text" id="number" placeholder="Enter Mobile Number"><br><br>
+
+<button onclick="sendOTP()">Send OTP</button>
+
+<br><br>
+
+<input type="text" id="otp" placeholder="Enter OTP"><br><br>
+
+<button onclick="verifyOTP()">Submit</button>
+
+</div>
+
+<script>
+function sendOTP() {
+  alert("Your OTP is 1234");
+}
+
+function verifyOTP() {
+  var otp = document.getElementById("otp").value;
+
+  if(otp == "2026") {
+    alert("Password reset success!");
+  } else {
+    alert("Wrong OTP");
+  }
+}
+</script>
+
+</body>
+</html>
