@@ -46,6 +46,15 @@ body {
 .header {
   text-align: center;
   color: #f0b90b;
+  font-size: 22px;
+}
+
+/* BALANCE */
+.balance {
+  text-align: center;
+  margin: 10px;
+  font-size: 18px;
+  color: #00ffc3;
 }
 
 /* CARDS */
@@ -93,6 +102,15 @@ button {
 .buy p { color: #00ff88; }
 .sell p { color: red; }
 
+/* WITHDRAW */
+.withdraw {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.withdraw input {
+  padding: 8px;
+}
 </style>
 
 </head>
@@ -110,39 +128,41 @@ button {
 
 <div class="header">🔥 LIVE TRADING SYSTEM 🔥</div>
 
+<div class="balance" id="bal">Balance: $10</div>
+
 <div class="cards">
 
 <div class="card">
 ELITE
 <p id="p1">$3.00</p>
 <p id="s1" class="green">UP</p>
-<button onclick="pay()">Buy</button>
+<button onclick="pay(3)">Buy</button>
 </div>
 
 <div class="card">
 PREMIUM
 <p id="p2">$2.00</p>
 <p id="s2" class="green">UP</p>
-<button onclick="pay()">Buy</button>
+<button onclick="pay(2)">Buy</button>
 </div>
 
 <div class="card">
 BASIC
 <p id="p3">$1.00</p>
 <p id="s3" class="green">UP</p>
-<button onclick="pay()">Buy</button>
+<button onclick="pay(1)">Buy</button>
 </div>
 
 <div class="card">
 ELITE PREMIUM
 <p id="p4">$50.00</p>
 <p id="s4" class="green">UP</p>
-<button onclick="pay()">Buy</button>
+<button onclick="pay(50)">Buy</button>
 </div>
 
 </div>
 
-<!-- BIG CHART -->
+<!-- CHART -->
 <div id="chart"></div>
 
 <!-- ORDER BOOK -->
@@ -151,11 +171,62 @@ ELITE PREMIUM
 <div class="sell" id="sell"></div>
 </div>
 
+<!-- WITHDRAW -->
+<div class="withdraw">
+<h3>Withdraw</h3>
+<input id="amount" placeholder="Enter amount">
+<button onclick="withdraw()">Withdraw</button>
+</div>
+
 </div>
 
 <script>
 
-/* TRADING VIEW BIG */
+/* BALANCE SYSTEM */
+var balance = localStorage.getItem("balance") || 10;
+
+function updateBalance(){
+  document.getElementById("bal").innerText = "Balance: $" + balance;
+}
+updateBalance();
+
+/* BUY SYSTEM */
+function pay(price){
+
+  if(balance >= price){
+    balance -= price;
+    localStorage.setItem("balance", balance);
+    updateBalance();
+    alert("Purchased Successfully!");
+  } else {
+    alert("Not enough balance");
+  }
+
+}
+
+/* WITHDRAW SYSTEM */
+function withdraw(){
+
+  var amount = document.getElementById("amount").value;
+
+  if(amount <= 0){
+    alert("Invalid amount");
+    return;
+  }
+
+  if(amount > balance){
+    alert("Not enough balance");
+    return;
+  }
+
+  balance -= amount;
+  localStorage.setItem("balance", balance);
+  updateBalance();
+
+  alert("Withdraw request sent!");
+}
+
+/* TRADING VIEW */
 new TradingView.widget({
   "width": "100%",
   "height": 500,
@@ -168,7 +239,6 @@ new TradingView.widget({
 
 /* PRICE SYSTEM */
 var prices = [3,2,1,50];
-
 var min = [2.90,1.95,1.00,48];
 var max = [3.22,2.12,1.32,57];
 
@@ -196,7 +266,7 @@ function updatePrices(){
   }
 }
 
-/* MARKET LIST (100+) */
+/* MARKET LIST */
 function updateCompanies(){
   let names = ["Binance","Bybit","KuCoin","OKX","Gate","Bitget","Huobi","Coinbase","Kraken","Bitfinex","MEXC","Deribit"];
   let html = "";
@@ -213,7 +283,7 @@ function updateCompanies(){
   document.getElementById("companies").innerHTML = html;
 }
 
-/* ORDER BOOK (40+) */
+/* ORDER BOOK */
 function updateOrderBook(){
   let buyHTML = "<h4>BUY</h4>";
   let sellHTML = "<h4>SELL</h4>";
@@ -225,11 +295,6 @@ function updateOrderBook(){
 
   document.getElementById("buy").innerHTML = buyHTML;
   document.getElementById("sell").innerHTML = sellHTML;
-}
-
-/* BKASH */
-function pay(){
-  window.location.href = "https://www.bkash.com/";
 }
 
 /* LOOP */
