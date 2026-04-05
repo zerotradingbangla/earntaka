@@ -1,21 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>OTP</title>
+<title>OTP Reset</title>
 
 <style>
 body {
   font-family: Arial;
   text-align: center;
-  background: #667eea;
+  background: linear-gradient(135deg, #667eea, #764ba2);
 }
 
 .box {
   background: white;
-  padding: 20px;
+  padding: 25px;
   margin: 100px auto;
-  width: 300px;
-  border-radius: 10px;
+  width: 320px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button {
+  width: 95%;
+  padding: 12px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
 }
 </style>
 
@@ -25,34 +43,76 @@ body {
 
 <div class="box">
 
-<h2>Forgot Password</h2>
+<h2>🔐 Forgot Password</h2>
 
-<input type="text" id="number" placeholder="Enter Mobile Number"><br><br>
+<input type="text" id="phone" placeholder="+8801XXXXXXXXX"><br>
 
 <button onclick="sendOTP()">Send OTP</button>
 
-<br><br>
+<br>
 
-<input type="text" id="otp" placeholder="Enter OTP"><br><br>
+<input type="text" id="otp" placeholder="Enter OTP"><br>
 
-<button onclick="verifyOTP()">Submit</button>
+<button onclick="verifyOTP()">Verify OTP</button>
+
+<!-- Firebase Recaptcha -->
+<div id="recaptcha-container"></div>
 
 </div>
 
-<script>
-function sendOTP() {
-  alert("Your OTP is 1234");
+<!-- 🔥 FIREBASE SCRIPT -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCfl7V_-yp5HvfUd00h-RTdNmvXNu7I37o",
+  authDomain: "project-one-5c61e.firebaseapp.com",
+  projectId: "project-one-5c61e",
+  storageBucket: "project-one-5c61e.firebasestorage.app",
+  messagingSenderId: "529608401459",
+  appId: "1:529608401459:web:d478bf2d0aabe285c87946"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// 🔐 reCAPTCHA setup
+window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+  'size': 'normal'
+});
+
+// 📩 SEND OTP
+window.sendOTP = function () {
+  let phone = document.getElementById("phone").value;
+
+  signInWithPhoneNumber(auth, phone, window.recaptchaVerifier)
+    .then((confirmationResult) => {
+      window.confirmationResult = confirmationResult;
+      alert("OTP Sent ✅");
+    })
+    .catch((error) => {
+      alert("Error: " + error.message);
+    });
 }
 
-function verifyOTP() {
-  var otp = document.getElementById("otp").value;
+// ✅ VERIFY OTP
+window.verifyOTP = function () {
+  let code = document.getElementById("otp").value;
 
-  if(otp == "2026") {
-    alert("Password reset success!");
-  } else {
-    alert("Wrong OTP");
-  }
+  confirmationResult.confirm(code)
+    .then((result) => {
+      alert("OTP Verified ✅");
+
+      // 👉 এখানে তুমি reset page এ পাঠাবে
+      window.location.href = "reset.html";
+    })
+    .catch((error) => {
+      alert("Wrong OTP ❌");
+    });
 }
+
 </script>
 
 </body>
